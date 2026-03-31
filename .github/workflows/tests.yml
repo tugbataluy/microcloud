@@ -31,7 +31,7 @@ defaults:
 
 jobs:
   changes:
-    if: ${{ github.repository == 'canonical/microcloud' }}
+    if: ${{ github.repository == 'tugbataluy/microcloud' }}
     name: Changes
     runs-on: ubuntu-slim
     outputs:
@@ -49,7 +49,7 @@ jobs:
           glob: ":!doc/*"
 
   code-tests:
-    if: ${{ (needs.changes.outputs.except_docs == 'true' || github.event_name == 'schedule') && github.repository == 'canonical/microcloud' }}
+    if: ${{ (needs.changes.outputs.except_docs == 'true' || github.event_name == 'schedule') && github.repository == 'tugbataluy/microcloud' }}
     name: Code
     runs-on: ubuntu-22.04
     needs: [changes]
@@ -140,7 +140,7 @@ jobs:
       DEBUG: "1"
       SKIP_VM_LAUNCH: "1"
       SNAPSHOT_RESTORE: "1"
-    if: ${{ github.repository == 'canonical/microcloud' }}
+    if: ${{ github.repository == 'tugbataluy/microcloud' }}
     name: System (core)
     runs-on: self-hosted-linux-amd64-noble-large
     needs: code-tests
@@ -194,7 +194,7 @@ jobs:
       DEBUG: "1"
       SKIP_VM_LAUNCH: "1"
       SNAPSHOT_RESTORE: "1"
-    if: ${{ github.repository == 'canonical/microcloud' }}
+    if: ${{ github.repository == 'tugbataluy/microcloud' }}
     name: System (upgrade)
     runs-on: self-hosted-linux-amd64-noble-large
     needs: code-tests
@@ -226,7 +226,7 @@ jobs:
       CGO_LDFLAGS: "-L/home/runner/go/bin/dqlite/libs/"
       LD_LIBRARY_PATH: "/home/runner/go/bin/dqlite/libs/"
       CGO_LDFLAGS_ALLOW: "(-Wl,-wrap,pthread_create)|(-Wl,-z,now)"
-    if: ${{ ( github.event_name == 'workflow_dispatch' || github.event_name == 'schedule' ) && github.ref_name == 'main' && github.repository == 'canonical/microcloud' }}
+    if: ${{ ( github.event_name == 'workflow_dispatch' || github.event_name == 'schedule' ) && github.ref_name == 'main' && github.repository == 'tugbataluy/microcloud' }}
     steps:
       - name: Checkout
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
@@ -295,7 +295,7 @@ jobs:
     name: Trigger snap edge build
     runs-on: ubuntu-24.04
     needs: [code-tests, system-tests-core, system-tests-upgrade, doc-tests]
-    if: ${{ github.repository == 'canonical/microcloud' && github.event_name == 'push' && github.actor != 'dependabot[bot]' }}
+    if: ${{ github.repository == 'tugbataluy/microcloud' && github.event_name == 'push' && github.actor != 'dependabot[bot]' }}
     env:
       SSH_AUTH_SOCK: /tmp/ssh_agent.sock
       PACKAGE: "microcloud"
